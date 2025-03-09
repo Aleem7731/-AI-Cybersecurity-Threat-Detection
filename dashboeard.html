@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Cybersecurity Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            background-color: #000;
+            color: white;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .content {
+            flex: 1;
+            padding: 20px;
+        }
+        .dashboard-header h1 {
+            font-size: 32px;
+            font-weight: bold;
+            color: #00c3ff;
+        }
+        
+        .detection-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px; /* Decreased gap */
+        }
+        
+        .card {
+            background: #1a1a1a;
+            padding: 30px; /* Increased padding */
+            border-radius: 12px;
+            text-align: center;
+            transition: 0.3s ease;
+            max-width: 380px; /* Increased max width */
+            width: 100%;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+            font-size: 18px; /* Increased font size */
+        }
+        
+        /* Hover Effects */
+        .card.blue:hover { background-color: #0077cc; }
+        .card.green:hover { background-color: #28a745; }
+        .card.red:hover { background-color: #b30000; }
+        .card.orange:hover { background-color: #d4a017; }
+        
+        .detect-btn {
+            background: #00c3ff;
+            border: none;
+            padding: 12px;
+            margin-top: 10px;
+            width: 200px;
+            border-radius: 6px;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .detect-btn:hover {
+            background: #008ecf;
+        }
+        .scan-section {
+            margin-top: 15px;
+            padding: 20px;
+            border-bottom: 3px solid #00c3ff;
+        }
+        .scan-animation {
+            display: none;
+            width: 60px;
+            height: 60px;
+            border: 6px solid rgba(255, 255, 255, 0.3);
+            border-top: 6px solid #00c3ff;
+            border-radius: 50%;
+            margin: 15px auto;
+            animation: spin 1s linear infinite, glow 1.5s infinite alternate;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes glow {
+            0% { box-shadow: 0 0 10px #00c3ff; }
+            100% { box-shadow: 0 0 20px #00c3ff; }
+        }
+        
+        /* Background Image */
+        .image-container {
+            flex-shrink: 0;
+            width: 100%;
+            height: 70vh;
+            background-image: url('dashboard.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+        .kiet-logo {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 180px;
+            height: auto;
+            z-index: 100;
+        }
+        .names-section {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            color: white;
+            text-align: left;
+            font-size: 20px;
+            z-index: 120;
+            line-height: 2.5;
+        }
+        .names-section strong {
+            font-weight: bold;
+        }
+        
+        
+        /* Updated Summary Box - Increased Size & Font */
+        .summary-box {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 40px;           /* Increased padding */
+            border-radius: 12px;
+            color: white;
+            font-size: 26px;         /* Increased font size */
+            width: 500px;            /* Increased width */
+            text-align: left;
+            line-height: 2;          /* Adjusted line height for better readability */
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+        }
+        
+
+        @media (min-width: 768px) {
+            .detection-container {
+                flex-direction: row;
+                justify-content: space-around;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <div class="dashboard-header">
+            <h1>🔒 AI Cybersecurity Threat Detection</h1>
+        </div>
+        
+
+        <div class="detection-container">
+            <div class="card blue">
+                <span>📧</span> <strong>Phishing Detection</strong>
+                <p>Detects malicious emails attempting to steal sensitive data.</p>
+                <button class="detect-btn" onclick="startDetection('Phishing')"><a href="http://localhost:8501/">scan</a></button>
+            </div>
+            <div class="card green">
+                <span>🦠</span> <strong>Malware Detection</strong>
+                <p>Analyzes URLs to identify malware threats.</p>
+                <button class="detect-btn" onclick="startDetection('Malware')"><a href="http://localhost:8501/">Redirect</a></button>
+            </div>
+            <div class="card red">
+                <span>🔓</span> <strong>Intrusion Detection</strong>
+                <p>Monitors network activity for unauthorized access attempts.</p>
+                <button class="detect-btn" onclick="startDetection('Intrusion')">Redirect</button>
+            </div>
+            <div class="card orange">
+                <span>📊</span> <strong>Anomaly Detection</strong>
+                <p>Identifies unusual activity patterns to prevent cyber threats.</p>
+                <button class="detect-btn" onclick="startDetection('Anomaly')">Redirect</button>
+            </div>
+        </div>
+
+        <div class="scan-section">
+            <div class="status" id="statusMessage"></div>
+            <div class="scan-animation" id="scanAnimation"></div>
+        </div>
+    </div>
+    
+
+    <!-- Background Image with Summary Box -->
+    <div class="image-container">
+        <div class="summary-box" id="summaryBox">
+            <strong>🔍 AI Cybersecurity Overview</strong><br>
+            🚀 AI-driven detection for phishing, malware, and anomalies.<br>
+            🛡️ Real-time threat monitoring.<br>
+            🌐 Scans URLs & APKs for security risks.<br>
+            📊 Ensures safer online interactions.<br>
+        </div>
+    </div>
+
+    <script>
+        function startDetection(type) {
+            let inputData = document.getElementById("inputData").value.trim();
+            let statusMessage = document.getElementById("statusMessage");
+            let scanAnimation = document.getElementById("scanAnimation");
+            let errorMessage = document.getElementById("errorMessage");
+
+            // Regular Expression to Validate URLs and APK Links
+            let validPattern = /^(https?:\/\/\S+\.\S+|.*\.apk)$/i;
+
+            if (!validPattern.test(inputData)) {
+                errorMessage.style.display = "block";
+                return;
+            }
+
+            errorMessage.style.display = "none";
+            statusMessage.innerHTML = `🔍 AI-Running ${type} Detection...`;
+            scanAnimation.style.display = "block";
+
+            setTimeout(() => {
+                statusMessage.innerHTML = "✅ No Threats Found.";
+                scanAnimation.style.display = "none";
+            }, 3000);
+        }
+    </script>
+    <img src="KIETGroup.jpg" alt="KIET Logo" class="kiet-logo">
+    <div class="names-section">
+        <strong>👨‍💻 Developers :</strong><br>
+        🔹 <strong>Sk.Aleem</strong><br>
+        🔹 <strong>G.Sai Lakshman</strong><br>
+        🔹 <strong>K.Daksha Daya</strong><br><br>
+        <strong>🎓 Guided by :</strong><br>
+        🔹 <strong>Prof. Abdul Aziz Sir</strong>
+    </div>
+    
+    
+    
+</body>
+</html>

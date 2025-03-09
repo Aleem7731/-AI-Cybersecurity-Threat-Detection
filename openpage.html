@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Based Cybersecurity Threat Detection</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #000;
+            color: white;
+            text-align: center;
+        }
+        .container {
+            animation: fadeIn 2s ease-in-out;
+        }
+        h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        p {
+            font-size: 20px;
+            color: #ccc;
+        }
+        .loader {
+            border: 6px solid #f3f3f3;
+            border-top: 6px solid #3498db;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔒 AI-Based Cybersecurity Threat Detection</h1>
+        <p>Securing your data with AI intelligence...</p>
+        <div class="loader"></div>
+        <p>Redirecting to Sign In...</p>
+    </div>
+
+    <script>
+        setTimeout(() => {
+            window.location.href = "http://127.0.0.1:5500/sign.html"; // Redirect to the Sign-In Page
+        }, 3000);
+    </script>
+</body>
+</html>
